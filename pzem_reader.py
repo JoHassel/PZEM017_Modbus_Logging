@@ -1,7 +1,7 @@
 import minimalmodbus
 import serial
 import time
-from contextlib import closing
+# from contextlib import closing
 
 DEVICE_ADDRESS = 0x01
 BAUD_RATE = 9600
@@ -9,6 +9,7 @@ TIMEOUT = 1
 PORT = '/dev/ttyUSB0'
 
 def read_pzem_data():
+    
     # Initialize the connection to the PZEM device
     instrument = minimalmodbus.Instrument(PORT, DEVICE_ADDRESS)
     instrument.serial.baudrate = 9600
@@ -20,6 +21,8 @@ def read_pzem_data():
     try:
         # Read measurement data
         voltage = instrument.read_register(0x0000, number_of_decimals=2, functioncode=4)
+        # voltage = instrument._generic_command(4, 0x0000, number_of_decimals=2)
+
         current = instrument.read_register(0x0001, number_of_decimals=2, functioncode=4)
         power_low = instrument.read_register(0x0002, functioncode=4)
         power_high = instrument.read_register(0x0003, functioncode=4)
@@ -40,6 +43,7 @@ def read_pzem_data():
         # Print alarm statuses
         print(f"High Voltage Alarm: {'Alarm' if high_voltage_alarm == 0xFFFF else 'Clear'}")
         print(f"Low Voltage Alarm: {'Alarm' if low_voltage_alarm == 0xFFFF else 'Clear'}")
+        print("-------------------------------------------------------------------------")
         
     except minimalmodbus.IllegalRequestError as e:
         print(f"Error: {e}")
@@ -49,4 +53,10 @@ def read_pzem_data():
         instrument.serial.close()
 
 if __name__ == "__main__":
-    read_pzem_data()
+    while True:
+        try:
+            read_pzem_data()
+            time.sleep(1)  # wait for 1 second
+        except KeyboardInterrupt:
+            print("Interrupted, exiting...")
+            break

@@ -2,7 +2,7 @@
 
 # PZEM-017 Modbus Interface
 
-This repository contains two Python scripts for interfacing with PZEM-017 Modbus energy monitoring devices. The scripts allow you to read the data from the devices and change their parameters.
+This repository contains three Python scripts for interfacing with PZEM-017 Modbus energy monitoring devices. The scripts allow you to read the data from the devices, log them to a CSV file and change the device's parameters.
 
 ## Table of Contents
 
@@ -10,6 +10,7 @@ This repository contains two Python scripts for interfacing with PZEM-017 Modbus
 - [Installation](#installation)
 - [Usage](#usage)
   - [pzem_reading.py](#pzem_readingpy)
+  - [csv_log.py](#csv_logpy)
   - [change_settings.py](#change_settingspy)
 - [FAQ](#faq)
 
@@ -28,11 +29,11 @@ This repository contains two Python scripts for interfacing with PZEM-017 Modbus
 
 2. Install the required Python libraries by running the following command in your terminal or command prompt:
 
-   ```
-   pip install minimalmodbus pyserial
-   ```
+```
+pip install minimalmodbus pyserial
+```
 
-3. Clone this repository or download the Python scripts `pzem_reading.py` and `change_settings.py`.
+3. Clone this repository or download the Python scripts `pzem_reading.py`, `csv_log.py` and `change_settings.py`.
 
 ```
 git clone https://github.com/croutonso/PZEM017modbus.git
@@ -56,7 +57,22 @@ This script reads data from the PZEM-017 device and displays the voltage, curren
    python pzem_reading.py
    ```
 
-4. The script will display the voltage, current, power, and energy values.
+4. The script will print the voltage, current, power, and energy values to the terminal once a second.
+
+### csv_log.py
+
+1. Open `csv_log.py` in a text editor and set the port and device address in `init()´.
+
+2. Save the changes and close the text editor.
+
+3. Open a terminal, navigate to the directory containing `csv_log.py`, and run the following command:
+
+   ```
+   python csv_log.py
+   ```
+
+4. The script will create a log file and write data to it in the backgound.
+
 
 ### change_settings.py
 
@@ -110,7 +126,7 @@ Look for lines containing `ttyUSB` or `ttyAMA`. The port name should look like `
 
 **Q: Can I use these scripts on a Windows system?**
 
-A: Yes, these scripts can be used on a Windows system. You will need to adjust the `PORT` variable in the Python scripts to the appropriate COM port for your device (e.g., `COM3`). You can check available COM ports in the Device Manager under "Ports (COM & LPT)".
+A: Yes, these scripts can be used on a Windows system. You will need to adjust the `PORT` variable in the Python scripts to the appropriate COM port for your device (e.g., `COM3`). You can check available COM ports in the Device Manager under "Ports (COM & LPT)". Alternatively you can use WSL and bind your USB ports to the Linux subsystem. ([Microsoft Instructions](https://learn.microsoft.com/de-de/windows/wsl/connect-usb))
 
 **Q: How do I install the minimalmodbus and pySerial libraries on a Raspberry Pi or Linux system?**
 
